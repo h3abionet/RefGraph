@@ -45,9 +45,11 @@ As an alternative, try ZGRViewer. However, the SVG output doesn't colour the nod
 - Currently working on sequenceTubeMap viz.
 
 ## Run driver script:
-Example command:
-
-`$ python3 DRIVER_dyedot.py -p ./VCFs/ -o output -c chr7 -b 6000 -e 15000`
+Example command:  
+Basic:  
+`python3 DRIVER_dyedot.py -p ./VCFs/ -o DDoutput`  
+Add region:  
+`$ python3 DRIVER_dyedot.py -p ./VCFs/ -o DDoutput -c chr7 -b 6000 -e 15000`
 
 If you need help:
 
