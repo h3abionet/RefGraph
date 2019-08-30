@@ -1,6 +1,7 @@
 from random import randint
 from graphviz import Digraph
 import seaborn as sns
+from class_RawBuilder import rawData
 
 class RefGraphBuilder():
 
@@ -11,25 +12,39 @@ class RefGraphBuilder():
         self.refpath = refpath
         p = Digraph(name='REFERENCE', node_attr={'shape': 'cds', 'color': 'black', 'fillcolor': 'grey', 'fixedsize':'true'}, format='png',graph_attr={'splines': 'spline', 'rankdir': 'LR'},engine='dot',edge_attr={'arrowhead': 'vee', 'arrowsize': '0.5', 'color': 'black','penwidth':'2'})
         nw = 0
-
+        nodedata = {}
+        edgedata = {}
         for i in range(1, len(self.refpath) - 1):  # Has to start at one, else loopback in graph
             nw = (int(refpath[i+1][1]) - int(refpath[i][1])) / 10
             if nw < 1.2:
                 nw = 1.2
-
+            ##### Return a dictionary of node attr to work with - interactive plotting
+            #nodedata[str(self.refpath[i - 1][1] + self.refpath[i - 1][2])] = ["label", str(self.refpath[i - 1][0] + ' ' + self.refpath[i - 1][1] + ' ' + self.refpath[i - 1][2]), "width", str(nw)]
+            nodedata = rawData().nodeData(refpath=self.refpath, i=i, nw=nw, nodedata=nodedata)
+            #####
             p.node(self.refpath[i - 1][1] + self.refpath[i - 1][2],label=str(self.refpath[i - 1][0] + ' ' + self.refpath[i - 1][1] + ' ' + self.refpath[i - 1][2]), width = str(nw))
+            #### NEED TO ADD FOR EDGES AS WELL
             p.edge(self.refpath[i - 1][1] + self.refpath[i - 1][2], self.refpath[i][1] + self.refpath[i][2])
+            edgedata = rawData().edgeData(refpath=self.refpath, i=i, nw=nw, edgedata=edgedata)
 
-        p.node(self.refpath[len(self.refpath) - 1][1] + self.refpath[len(self.refpath) - 1][2],label=str(self.refpath[len(self.refpath) - 1][0] + ' ' + self.refpath[len(self.refpath) - 1][1] + ' ' + self.refpath[len(self.refpath) - 1][2]))
+        ## add second last and last node - edge case
         p.node(self.refpath[len(self.refpath) - 2][1] + self.refpath[len(self.refpath) - 2][2],label=str(self.refpath[len(self.refpath) - 2][0] + ' ' + self.refpath[len(self.refpath) - 2][1] + ' ' + self.refpath[len(self.refpath) - 2][2]))
-        p.edge(self.refpath[len(self.refpath) - 2][1] + self.refpath[len(self.refpath) - 2][2],
-               self.refpath[len(self.refpath) - 1][1] + self.refpath[len(self.refpath) - 1][2])
+        p.node(self.refpath[len(self.refpath) - 1][1] + self.refpath[len(self.refpath) - 1][2],label=str(self.refpath[len(self.refpath) - 1][0] + ' ' + self.refpath[len(self.refpath) - 1][1] + ' ' + self.refpath[len(self.refpath) - 1][2]))
+        ## special edgecase nodes (pun intended)
+        nodedata[str(self.refpath[len(self.refpath) - 2][1] + self.refpath[len(self.refpath) - 2][2])] = ["label", str(self.refpath[len(self.refpath) - 2][0] + ' ' + self.refpath[len(self.refpath) - 2][1] + ' ' + self.refpath[len(self.refpath) - 2][2]), "width", str(1.2)]
+        nodedata[str(self.refpath[len(self.refpath) - 1][1] + self.refpath[len(self.refpath) - 1][2])] = ["label", str(self.refpath[len(self.refpath) - 1][0] + ' ' + self.refpath[len(self.refpath) - 1][1] + ' ' + self.refpath[len(self.refpath) - 1][2]), "width", str(1.2)]
 
+        ##
+        p.edge(self.refpath[len(self.refpath) - 2][1] + self.refpath[len(self.refpath) - 2][2],self.refpath[len(self.refpath) - 1][1] + self.refpath[len(self.refpath) - 1][2])
+        edgedata[str(self.refpath[len(self.refpath) - 2][1] + self.refpath[len(self.refpath) - 2][2]), str(self.refpath[len(self.refpath) - 1][1] + self.refpath[len(self.refpath) - 1][2])] = ["label" , "Ref"]
+        #edgedata[str(refpath[i - 1][1] + refpath[i - 1][2]), str(refpath[i][1] + refpath[i][2])] = ["label", "nothing"]
+        ## Not adding descriptor nodes/edges yet
         p.node(str('REF'), label=str('Reference'),  width = '1.6')
         p.node(str('REF_'), label=str('Path'))
         p.edge('REF', 'REF_')
 
-        return p
+        #print(nodedata)
+        return p, nodedata, edgedata;
 
     def variantpath(self, output,graph,loci,refpath):
 
@@ -42,6 +57,11 @@ class RefGraphBuilder():
         del colour[7:9]
         colour = sns.color_palette(colour)
         colour = colour.as_hex()
+        vargraphcol = colour[randint(0, len(colour) - 1)]
+        vargraphcolfill = colour[randint(0, len(colour) - 1)]
+
+        vargraphcoledge = colour[randint(0, len(colour) - 1)]
+
 
         ## newvar
         allvar = {}
@@ -61,8 +81,12 @@ class RefGraphBuilder():
             matching = []
             ## newvar
 
-            x = Digraph(name=key, node_attr={'shape': 'cds', 'color': colour[randint(0, len(colour) - 1)],'fillcolor': colour[randint(0, len(colour) - 1)]} , engine='dot',edge_attr={'arrowhead': 'vee', 'arrowsize': '0.5', 'color': colour[randint(0, len(colour) - 1)],'penwidth':'4'})  # colour can also be set to use x11 names 'red'
 
+            ### expose graph variables to other functions
+
+            x = Digraph(name=key, node_attr={'shape': 'cds', 'color': vargraphcol,'fillcolor': vargraphcolfill} , engine='dot',edge_attr={'arrowhead': 'vee', 'arrowsize': '0.5', 'color': vargraphcoledge,'penwidth':'4'})  # colour can also be set to use x11 names 'red'
+            varnodedata = {}
+            varedgedata = {}
             for i in range(1, len(varpath) - 1):
                 # if output[key][i][0] == loci[0] and int(output[key][i][1]) >= loci[1] and int(output[key][i][1]) <= loci[2]:
 
@@ -70,17 +94,27 @@ class RefGraphBuilder():
                 if nw < 1.2: # have to include a maximum node size as well
                     nw = 1.2
                 if varpath[i - 1] in testref:
+
                     x.node(varpath[i - 1][1] + varpath[i - 1][2],label=str(varpath[i - 1][0] + ' ' + varpath[i - 1][1] + ' ' + varpath[i - 1][2]), width=str(nw))
+                    ## Add variant node manual plotting
+                    varnodedata = rawData().nodeData(refpath=varpath, i=i, nw=nw, nodedata=varnodedata, key=key)
+                    #####
+
                     matching = list(filter(lambda k: varpath[i] in allvar[k], allvar.keys()))
                     if matching: # exit pathways to a reference node
                         matching.append(key)
                         x.edge(varpath[i - 1][1] + varpath[i - 1][2], varpath[i][1] + varpath[i][2], label=str(' - '.join(matching)), color='black', style='dotted')
+                        ################
+                        ################ rethink how you're storing edges - rather use a dict of tuples to which you add additional data
+                        varedgedata = rawData().edgeData(refpath=varpath, i=i, nw=nw, edgedata=varedgedata)
                         matching = []
                     else:
                         x.edge(varpath[i - 1][1] + varpath[i - 1][2], varpath[i][1] + varpath[i][2], label=str(key))
+                        varedgedata = rawData().edgeData(refpath=varpath, i=i, nw=nw, edgedata=varedgedata, key=key)
 
                 else:
                     x.node(varpath[i - 1][1] + varpath[i - 1][2],label=str(varpath[i - 1][0] + ' ' + varpath[i - 1][1] + ' ' + varpath[i - 1][2]),width=str(nw))
+                    varnodedata = rawData().nodeData(refpath=varpath, i=i, nw=nw, nodedata=varnodedata)
                     matching = list(filter(lambda k: varpath[i] in allvar[k], allvar.keys()))
                     if matching:  ####################
                         matching.append(key)
@@ -90,11 +124,19 @@ class RefGraphBuilder():
                     else:
                         x.edge(varpath[i - 1][1] + varpath[i - 1][2], varpath[i][1] + varpath[i][2], label=str(key))
 
+            ## edge case nodes
+            x.node(varpath[len(varpath) - 2][1] + varpath[len(varpath) - 2][2], label=str(varpath[len(varpath) - 2][0] + ' ' + varpath[len(varpath) - 2][1] + ' ' + varpath[len(varpath) - 2][2]))
 
             x.node(varpath[len(varpath) - 1][1] + varpath[len(varpath) - 1][2], label=str(varpath[len(varpath) - 1][0] + ' ' + varpath[len(varpath) - 1][1] + ' ' + varpath[len(varpath) - 1][2]))
-            x.node(varpath[len(varpath) - 2][1] + varpath[len(varpath) - 2][2], label=str(varpath[len(varpath) - 2][0] + ' ' + varpath[len(varpath) - 2][1] + ' ' + varpath[len(varpath) - 2][2]))
+            varnodedata[str(varpath[len(varpath) - 2][1] + varpath[len(varpath) - 2][2])] = ["label", str(varpath[len(varpath) - 2][0] + ' ' + varpath[len(varpath) - 2][1] + ' ' + varpath[len(varpath) - 2][2]), "width", str(1.2)]
+            varnodedata[str(varpath[len(varpath) - 1][1] + varpath[len(varpath) - 1][2])] = ["label", str(varpath[len(varpath) - 1][0] + ' ' + varpath[len(varpath) - 1][1] + ' ' + varpath[len(varpath) - 1][2]), "width", str(1.2)]
+
+
             x.edge(varpath[len(varpath) - 2][1] + varpath[len(varpath) - 2][2],varpath[len(varpath) - 1][1] + varpath[len(varpath) - 1][2])
 
+
+
+            ## Not adding descriptor nodes/edges yet
             x.node(str(key), label=str(key))
             x.node(str(key + '_'), label=str('Path'))
             x.edge(str(key), str(key + '_'))
@@ -103,4 +145,5 @@ class RefGraphBuilder():
             allvar[key] = temp
 
             self.graph.subgraph(x)
-        return graph
+        return graph, varnodedata, varpath;
+

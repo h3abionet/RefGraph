@@ -1,4 +1,9 @@
-# Project is end of life
+[![Build Status](https://travis-ci.com/rndw/DyeDot.svg?branch=master)](https://travis-ci.com/rndw/DyeDot)
+
+# Current focus:
+[ ] Add XML output for Cytoscape
+[ ] Expose data structures to other functions
+[ ] Manual plotting - Interactive plotting
 
 # DyeDot: Variation graphs from VCF
 
@@ -45,11 +50,9 @@ As an alternative, try ZGRViewer. However, the SVG output doesn't colour the nod
 - Currently working on sequenceTubeMap viz.
 
 ## Run driver script:
-Example command:  
-Basic:  
-`python3 DRIVER_dyedot.py -p ./VCFs/ -o DDoutput`  
-Add region:  
-`$ python3 DRIVER_dyedot.py -p ./VCFs/ -o DDoutput -c chr7 -b 6000 -e 15000`
+Example command:
+
+`$ python3 DRIVER_dyedot.py -p ./VCFs/ -o output -c chr7 -b 6000 -e 15000`
 
 If you need help:
 
