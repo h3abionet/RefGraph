@@ -1,9 +1,15 @@
 [![Build Status](https://travis-ci.com/rndw/DyeDot.svg?branch=master)](https://travis-ci.com/rndw/DyeDot)
+[![Python 3.6](https://img.shields.io/badge/python-3.6-blue.svg)](https://www.python.org/downloads/release/python-360/)
+[![Python 3.7](https://img.shields.io/badge/python-3.7-blue.svg)](https://www.python.org/downloads/release/python-370/)
+![Code Size](https://img.shields.io/github/languages/code-size/rndw/DyeDot)
+![Repo Size](https://img.shields.io/github/repo-size/rndw/DyeDot)  
+
+![Last commit](https://img.shields.io/github/last-commit/rndw/DyeDot)
 
 # Current focus:
-[ ] Add XML output for Cytoscape
-[ ] Expose data structures to other functions
-[ ] Manual plotting - Interactive plotting
+[ ] Add XML output for Cytoscape  
+[ ] Expose data structures to other functions  
+[ ] Manual plotting - Interactive plotting  
 
 # DyeDot: Variation graphs from VCF
 

@@ -434,15 +434,15 @@ digraph REFERENCE {
 	"11996REF" -> "11997REF"
 	"11997REF" [label="chrI 11997 REF" width=1.2]
 	"11997REF" -> "12118REF"
-	"12119REF" [label="chrI 12119 REF"]
 	"12118REF" [label="chrI 12118 REF"]
+	"12119REF" [label="chrI 12119 REF"]
 	"12118REF" -> "12119REF"
 	REF [label=Reference width=1.6]
 	REF_ [label=Path]
 	REF -> REF_
 	subgraph yi38small {
-		node [color="#a8803b" fillcolor="#7baac4" shape=cds]
-		edge [arrowhead=vee arrowsize=0.5 color="#a8803b" penwidth=4]
+		node [color="#7baac4" fillcolor="#7baac4" shape=cds]
+		edge [arrowhead=vee arrowsize=0.5 color="#297762" penwidth=4]
 		"156REF" [label="chrI 156 REF" width=1.2]
 		"156REF" -> "157T" [label=yi38small]
 		"157T" [label="chrI 157 T" width=1.2]
@@ -651,16 +651,16 @@ digraph REFERENCE {
 		"4066REF" -> "4067G" [label=yi38small]
 		"4067G" [label="chrI 4067 G" width=1.2]
 		"4067G" -> "4119A" [label=yi38small]
-		"4120REF" [label="chrI 4120 REF"]
 		"4119A" [label="chrI 4119 A"]
+		"4120REF" [label="chrI 4120 REF"]
 		"4119A" -> "4120REF"
 		yi38small [label=yi38small]
 		yi38small_ [label=Path]
 		yi38small -> yi38small_
 	}
 	subgraph j11small {
-		node [color="#bf7f40" fillcolor="#297762" shape=cds]
-		edge [arrowhead=vee arrowsize=0.5 color="#da9ebe" penwidth=4]
+		node [color="#7baac4" fillcolor="#7baac4" shape=cds]
+		edge [arrowhead=vee arrowsize=0.5 color="#297762" penwidth=4]
 		"1274REF" [label="chrI 1274 REF" width=1.2]
 		"1274REF" -> "1275G" [label=j11small]
 		"1275G" [label="chrI 1275 G" width=1.2]
@@ -673,16 +673,16 @@ digraph REFERENCE {
 		"1300REF" -> "1301A" [label=j11small]
 		"1301A" [label="chrI 1301 A" width=1.2]
 		"1301A" -> "2339REF" [label=j11small]
-		"2340C" [label="chrI 2340 C"]
 		"2339REF" [label="chrI 2339 REF"]
+		"2340C" [label="chrI 2340 C"]
 		"2339REF" -> "2340C"
 		j11small [label=j11small]
 		j11small_ [label=Path]
 		j11small -> j11small_
 	}
 	subgraph mf1small {
-		node [color="#865e48" fillcolor="#7baac4" shape=cds]
-		edge [arrowhead=vee arrowsize=0.5 color="#b24d4e" penwidth=4]
+		node [color="#7baac4" fillcolor="#7baac4" shape=cds]
+		edge [arrowhead=vee arrowsize=0.5 color="#297762" penwidth=4]
 		"508REF" [label="chrI 508 REF" width=2.0]
 		"508REF" -> "509A" [label=mf1small]
 		"509A" [label="chrI 509 A" width=1.2]
@@ -923,8 +923,8 @@ digraph REFERENCE {
 		"11996REF" -> "11997A" [label=mf1small]
 		"11997A" [label="chrI 11997 A" width=1.2]
 		"11997A" -> "12118T" [label=mf1small]
-		"12119REF" [label="chrI 12119 REF"]
 		"12118T" [label="chrI 12118 T"]
+		"12119REF" [label="chrI 12119 REF"]
 		"12118T" -> "12119REF"
 		mf1small [label=mf1small]
 		mf1small_ [label=Path]
