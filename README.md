@@ -1,12 +1,11 @@
-![Code Size](https://img.shields.io/github/languages/h3abionet/RefGraph)  
+ 
 ![Repo Size](https://img.shields.io/github/repo-size/h3abionet/RefGraph)  
 
 # Reference Graph Team
 > Repository for all refgraph work.
 
 ## RefGraphTeam Docker
-![Code Size](https://img.shields.io/github/languages/h3abionet/RefGraph/Docker/vg)  
-![Repo Size](https://img.shields.io/github/repo-size/h3abionet/RefGraph/Docker/vg)  
+
 Docker image and instructions to run RefGraph team software.  
 Please refer to the **Docker** directory.
 
