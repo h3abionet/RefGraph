@@ -1,3 +1,5 @@
+![Repo Size](https://img.shields.io/github/repo-size/h3abionet/RefGraph) 
+
 # RefGraphTeam Docker
 Docker image and instructions to run RefGraph team software
 
